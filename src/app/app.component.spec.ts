@@ -14,6 +14,7 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
+
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
@@ -33,4 +34,3 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('h1').textContent).toContain('Welcome to project!');
   });
 });
-

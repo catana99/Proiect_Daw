@@ -1,0 +1,63 @@
+<mat-toolbar color="primary">
+    <button mat-button routerLink='/home'>Personal Blog</button>
+    <button mat-button routerLink='/about'>About</button>
+    <button mat-button routerLink='/contact'>Contact</button>
+    <button style="position:absolute; top:10; right: 0;" mat-button routerLink='/'>Logout</button>
+</mat-toolbar>
+
+<br><br><br>
+
+<div class="row">
+    <div class="col-md-3" routerLink='/view-events'>
+        <p-card title="View Events" [style]="{height: '600px'}" styleClass="ui-card-shadow">
+            <p-header>
+                <img style="height: 400px;" src="assets/view-events.PNG">
+            </p-header>
+            <div>
+                Be up-to-date with all our activities and events - they are all listed here!
+            </div>
+            <p-footer>
+            </p-footer>
+        </p-card>
+    </div>
+
+    <div class="col-md-3" routerLink='/add-event'>
+        <p-card title="Add Event" [style]="{height: '600px'}" styleClass="ui-card-shadow">
+            <p-header>
+                <img style="height: 400px;" src="assets/add-event.PNG">
+            </p-header>
+            <div>
+                Ready to organize a new event? Simply add it to our list of events here!
+            </div>
+            <p-footer>
+            </p-footer>
+        </p-card>
+    </div>
+
+    <div class="col-md-3" routerLink='/associate-image'>
+        <p-card title="Associate images to event" [style]="{height: '600px'}" styleClass="ui-card-shadow">
+            <p-header>
+                <img style="height: 400px;" src="assets/associate-image.png">
+            </p-header>
+            <div>
+                Show us how it went - describe the event through the pictures taken!
+            </div>
+            <p-footer>
+            </p-footer>
+        </p-card>
+    </div>
+
+    <div class="col-md-3" routerLink='/gallery'>
+        <p-card title="Gallery" [style]="{height: '600px'}" styleClass="ui-card-shadow">
+            <p-header>
+                <img style="height: 400px;" src="assets/gallery.png">
+            </p-header>
+            <div>
+                This is where all the magic happened - see our gallery of images from our events!
+            </div>
+            <p-footer>
+            </p-footer>
+        </p-card>
+    </div>
+</div>
+

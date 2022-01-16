@@ -1,0 +1,102 @@
+<!-- fereastra pentru delete -->
+<p-confirmDialog header="Confirmation" key="deleteEventDialog" icon="fa fa-question-circle" width="425"  appendTo="body"></p-confirmDialog>
+
+<p-growl></p-growl>
+
+<!-- fereastra pentru update -->
+<p-dialog [(visible)]="displayEditDialog" width="725"  appendTo="body">
+  <p-header>
+    Update Event
+  </p-header>
+
+<body>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="viewName"
+            required
+            [(ngModel)]="selectedEvent?.payload.doc.data().name" name="viewName"
+            #viewName="ngModel">
+    <div [hidden]="viewName.valid || viewName.pristine"
+        class="alert alert-danger">
+        Name is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea rows="10" cols="70" class="form-control" id="viewDescription"
+            required
+            [(ngModel)]="selectedEvent?.payload.doc.data().description" name="viewDescription"
+            #viewDescription="ngModel">
+    </textarea>
+    <div [hidden]="viewDescription.valid || viewDescription.pristine"
+        class="alert alert-danger">
+        Description is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="dateAndTime">Date and Time </label>
+    <input type="datetime-local" class="form-control" id="viewDate"
+            required
+            [(ngModel)]="selectedEvent?.payload.doc.data().date" name="viewDate"
+            #viewDate="ngModel">
+    <div [hidden]="viewDate.valid || viewDate.pristine"
+        class="alert alert-danger">
+        Date is required
+    </div>
+  </div>
+
+
+</body>
+  <p-footer><!--la click se apeleaza si o functie si cealalta-->
+      <button mat-raised-button type="button" color="primary" pButton icon="pi pi-check" (click)="updateEvent();hideUpdateEventDialog()" label="Update" class="ui-button-secondary"
+      [disabled]="!viewName.valid || !viewDescription.valid || !viewDate.valid" ></button>
+      <!-- butonul de update ramane disabled pana cand tot ce e in form e completat corect-->
+      <button type="button" pButton icon="pi pi-times" (click)="hideUpdateEventDialog()" label="Close" class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+
+
+<br> <br>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h2 style="text-align:center;">Events</h2>
+        <br> <br>
+
+        <table class="table table-hover"> <!-- tabelul de evenimente e facut folosing bootstrap-->
+            <thead>
+              <tr>
+                <th  scope="col">Name</th>
+                <th  scope="col">Description</th>
+                <th  scope="col">Date and Time</th>
+                <th  scope="col">Edit</th>
+                <th  scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let event of events" (click)="onSelect(event)" > <!-- cand dau click oriunde pe o linie, sa am in selectedEvent evenimentul selectat-->
+                    <td> {{event.payload.doc.data().name}} </td>
+                    <td> {{event.payload.doc.data().description}} </td>
+                    <td> {{event.payload.doc.data().date}} </td>
+                    <td (click)="displayUpdateEventDialog(event)">
+                      <a class="btn btn-primary"><i class="fa fa-pencil icon-pencil"></i> Edit</a>
+                      <!-- la click deschid fereastra de update-->
+                    </td>
+                    <td (click)="deleteEvent(event)"> <a class="btn btn-danger">
+                      <i class="fa fa-trash icon-large"></i> Delete</a>
+                      <!-- la click deschid fereastra de delete -->
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+
+    </div>
+</div>
+
+<!-- buton de adaugare eveniment nou-->
+<br> <br>
+<div style="display:flex;justify-content: center;"> <!-- centreaza butonul Add Event -->
+  <button type="button" pButton icon="pi pi-plus"  label="Add Event" class="ui-button-secondary" [routerLink]="['/add-event']"></button>
+</div>

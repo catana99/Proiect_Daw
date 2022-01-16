@@ -1,0 +1,34 @@
+<p-growl></p-growl>
+
+<br> <br>
+<h2 style="text-align: center;"> Associate images to an event </h2>
+<br> <br>
+
+<div style="display: flex;justify-content: center;"> <!--centreaza dropdown-ul-->
+    <p-dropdown [options]="events" [(ngModel)]="selectedEventId" placeholder="Select an Event" filter="true" [style]="{'width':'250px'}"></p-dropdown>
+</div>
+
+<!-- cand selectez un element din dropdown, proprietatea value e cea care se duce la ngModel -->
+<!-- [(ngModel)]="selectedEventId"  , deci selectedEventId va fi id-ul evenimentului selectat din dropdown-->
+<br><br>
+
+<h3 style="text-align: center;">Choose images</h3>
+<div style="display: flex;justify-content: center;"> <!-- centreaza continutul-->
+    <input id="chooseFile" type="file" multiple  accept="image/*">  <!--  accept="image/*"  -- pot fi incarcate doar imagini -->
+</div>
+
+<br><br>
+<!-- fac un *ngFor cu toate base64Encodings -- ca o galerie de imagini -->
+<!--se afiseaza galeria de imagini-->
+<ng-container *ngFor="let base64Encoding of base64Encodings">
+    <img height="150" src={{base64Encoding}} style="margin-left:50px;">
+</ng-container>
+
+
+<br><br>
+<div style="display: flex;justify-content: center;"> <!-- centreaza butonul-->
+    <button type="button" pButton icon="pi pi-plus"  label="Add Images" class="ui-button-secondary"
+            [disabled]="!selectedEventId || base64Encodings.length === 0" (click)="addImages()"></button>
+    <!-- butonul devine activ doar daca un eveniment a fost selectat si cel putin o imagine a fost selectata -->
+</div>
+

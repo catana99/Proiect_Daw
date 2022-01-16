@@ -1,6 +1,7 @@
+import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from 'angularfire2';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
@@ -8,6 +9,13 @@ import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 
 import { environment } from 'src/environments/environment.prod';
+//module de firebase pentru a o folosi in aplicatie
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -15,12 +23,18 @@ import { environment } from 'src/environments/environment.prod';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    MaterialModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    CoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    CoreModule,
+    SharedModule,
+    AppRoutingModule,
+    MaterialModule
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

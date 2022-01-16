@@ -1,0 +1,35 @@
+<body
+style="background-image:url(https://i.pinimg.com/originals/fe/90/d8/fe90d81f84fef9d9bd3cfadb1a9d66fe.jpg)">
+
+<main>
+  <section>
+    <form [formGroup]="signInForm" (ngSubmit)="signIn()">
+      <h3>Personal Blog</h3>
+      <p>Login to your account</p>
+
+      <mat-form-field [formGroup]="signInForm">
+        <input matInput placeholder="Enter your email" [formControl]="email" required>
+        <mat-error *ngIf="email.valid">Not a valid email!</mat-error>
+      </mat-form-field>
+
+      <mat-form-field [formGroup]="signInForm">
+          <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'"[formControl]="password" required>
+          <mat-icon matSuffix (click)="hide = !hide"> {{ hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-hint align="end">
+            <a routerLink='/reset-password'>Forgot password?</a>
+          </mat-hint>
+          <mat-error *ngIf="password.valid">Not a valid password!</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" color="accent">Sign in</button>
+
+        <p></p>
+
+        <p>Don't have an account?</p> <a routerLink='/signup'>
+        <button mat-raised-button type="submit" color="accent">Register here</button>
+        </a>
+    </form>
+  </section>
+</main>
+</body>
+
