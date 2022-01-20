@@ -1,0 +1,26 @@
+<br> <br>
+<h2 style="text-align: center;"> Gallery </h2>
+<br> <br>
+
+<div style="display: flex;justify-content: center;"> <!-- centreaza the dropdown--> <!--explain below line-->
+    <p-dropdown [options]="events" [(ngModel)]="selectedEventId" placeholder="All Events" filter="true"
+                [style]="{'width':'250px'}" (onChange)="getAllImagesByEventId(selectedEventId)"></p-dropdown>
+    <!-- cand se schimba valoarea din dropdown se apeleaza getAllImagesByEventId(selectedEventId)-->
+</div>
+
+<!-- cand selectez un element din dropdown, proprietatea value e cea care se duce la ngModel -->
+<!-- [(ngModel)]="selectedEventId"  , deci selectedEventId va fi id-ul evenimentului selectat din dropdown-->
+<!--*ngfor si *ngif sunt specifice Angular-->
+<br><br><br>
+
+<!-- un *ngFor cu toate base64Encodings -- ca o galerie de imagini -->
+<ng-container *ngFor="let base64Encoding of base64Encodings">
+    <img height="150" src={{base64Encoding}} style="margin-left:50px;">
+</ng-container>
+
+<!-- daca nu exista imagini pentru evenimentul selectat si totusi acestea s-au cautat pentru el, afiseaza un mesaj corespunzator -->
+<ng-container *ngIf="base64Encodings.length === 0 && gotImagesStatus === true">
+    <h3 style="text-align: center;"> There are no images for the selected event </h3>
+</ng-container>
+
+
