@@ -1,4 +1,5 @@
 using backend;
+using backend.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,11 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<EventContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("EventsDatabase")));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+builder.Services.AddScoped<IEventImagesRepository, EventImagesRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 var app = builder.Build();
 
