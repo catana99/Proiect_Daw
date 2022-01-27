@@ -30,16 +30,33 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CategoryEvent",
+                columns: table => new
+                {
+                    CategoriesId = table.Column<int>(type: "int", nullable: false),
+                    EventsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryEvent", x => new { x.CategoriesId, x.EventsId });
                     table.ForeignKey(
-                        name: "FK_Events_EventCategories_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_CategoryEvent_EventCategories_CategoriesId",
+                        column: x => x.CategoriesId,
                         principalTable: "EventCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryEvent_Events_EventsId",
+                        column: x => x.EventsId,
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -50,8 +67,8 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Base64String = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    Base64String = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,26 +82,29 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategoryEvent_EventsId",
+                table: "CategoryEvent",
+                column: "EventsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventImages_EventId",
                 table: "EventImages",
                 column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_CategoryId",
-                table: "Events",
-                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CategoryEvent");
+
+            migrationBuilder.DropTable(
                 name: "EventImages");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "EventCategories");
 
             migrationBuilder.DropTable(
-                name: "EventCategories");
+                name: "Events");
         }
     }
 }

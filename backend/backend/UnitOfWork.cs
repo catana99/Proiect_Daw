@@ -8,37 +8,37 @@ namespace backend
         private readonly EventContext EventContext;
         private readonly IHttpContextAccessor HttpContextAccessor;
 
-        private IBaseRepository<Event> EventsRepositoryField;
-        public IBaseRepository<Event> EventsRepository
+        private IEventsRepository EventsRepositoryField;
+        public IEventsRepository EventsRepository
         {
             get
             {
                 if (EventsRepositoryField == null)
-                    EventsRepositoryField = HttpContextAccessor.HttpContext.RequestServices.GetRequiredService<IBaseRepository<Event>>();
+                    EventsRepositoryField = HttpContextAccessor.HttpContext.RequestServices.GetRequiredService<IEventsRepository>();
 
                 return EventsRepositoryField;
             }
         }
 
-        private IBaseRepository<EventImage> EventImagesRepositoryField;
-        public IBaseRepository<EventImage> EventImagesRepository
+        private IEventImagesRepository EventImagesRepositoryField;
+        public IEventImagesRepository EventImagesRepository
         {
             get
             {
                 if (EventImagesRepositoryField == null)
-                    EventImagesRepositoryField = HttpContextAccessor.HttpContext.RequestServices.GetRequiredService<IBaseRepository<EventImage>>();
+                    EventImagesRepositoryField = HttpContextAccessor.HttpContext.RequestServices.GetRequiredService<IEventImagesRepository>();
 
                 return EventImagesRepositoryField;
             }
         }
 
-        private IBaseRepository<Category> EventCategoriesRepositoryField;
-        public IBaseRepository<Category> EventCategoriesRepository
+        private ICategoriesRepository EventCategoriesRepositoryField;
+        public ICategoriesRepository CategoriesRepository
         {
             get
             {
                 if (EventCategoriesRepositoryField == null)
-                    EventCategoriesRepositoryField = HttpContextAccessor.HttpContext.RequestServices.GetRequiredService<IBaseRepository<Category>>();
+                    EventCategoriesRepositoryField = HttpContextAccessor.HttpContext.RequestServices.GetRequiredService<ICategoriesRepository>();
 
                 return EventCategoriesRepositoryField;
             }

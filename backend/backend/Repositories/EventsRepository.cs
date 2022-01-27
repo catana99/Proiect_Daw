@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories
 {
-    public class EventsRepository : IBaseRepository<Event>
+    public class EventsRepository : IEventsRepository
     {
         public DbSet<Event> DbSet { get; }
         public EventContext EventContext { get; }
@@ -14,28 +14,33 @@ namespace backend.Repositories
             DbSet = dbContext.Set<Event>();
         }
 
-        public Event? GetById(int id) => DbSet.FirstOrDefault(x => x.Id == id);
-        public IEnumerable<Event>? GetAll() => DbSet.ToList();
+        public Event? GetById(int id) => DbSet.Include(x => x.Categories).FirstOrDefault(x => x.Id == id);
+        public IEnumerable<Event>? GetAll() => DbSet.Include(x => x.Categories).ToList();
         public Event Create(Event @event)
         {
             DbSet.Add(@event);
             return @event;
         }
-        public Event Update(Event @event)
+        public Event? Update(Event @event)
         {
             var currentEvent = GetById(@event.Id);
-            if (currentEvent == null)
-            {
-                return Create(@event);
-            }
-            else
+            if (currentEvent != null)
             {
                 currentEvent.Name = @event.Name;
                 currentEvent.Description = @event.Description;
                 DbSet.Update(currentEvent);
 
-                return currentEvent;
             }
+
+            return currentEvent;
+        }
+        public void Delete(int eventId)
+        {
+            Event? @event = GetById(eventId);
+            if (@event == null)
+                return;
+
+            DbSet.Remove(@event);
         }
         public IEnumerable<Tuple<string, int>> GetSummary()
         {
