@@ -52,7 +52,13 @@
                 Date is required
             </div>
             </div>
-
+            <div class="form-group">
+            <label for="categories">Categories </label>
+            <br/>
+            <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select" name="test">
+              <option *ngFor="let category of categories">{{category.value}}</option>
+            </select>
+          </div>
             <!-- butonul devine activ, doar cand intregul formular cu proprietatile sale devin valide-->
             <button type="submit" class="btn btn-success" [disabled]="!eventForm.form.valid">Add event</button>
         </div>

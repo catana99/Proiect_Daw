@@ -5,4 +5,5 @@ export class OngEvent {
     description: string;
     date: Date;
     images?: any[]; //parametru optional, poate avea sau nu imagini
+    categories?: any[];
 }

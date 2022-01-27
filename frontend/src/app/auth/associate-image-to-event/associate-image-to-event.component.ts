@@ -38,8 +38,7 @@ export class AssociateImageToEventComponent implements OnInit, AfterViewInit {
 
   //iau toate evenimentele din colectia Events
   private getEvents() {
-    this.eventsService.getEvents().subscribe(
-      events => {
+    this.eventsService.getEvents().subscribe( events => {
         this.events = [];
         for (let event of events) {
           this.events.push({

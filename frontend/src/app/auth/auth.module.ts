@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router'
-
 import { SharedModule } from '../shared/shared.module';
-import { SigninComponent } from './signin/signin.component';
 import { HomeComponent } from './home/home.component';
-import { SignupComponent } from './signup/signup.component';
 import { AddEventComponent } from './add-event/add-event.component';
 import { ViewEventsComponent } from './view-events/view-events.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { AssociateImageToEventComponent } from './associate-image-to-event/associate-image-to-event.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
+import { ViewCategoriesComponent } from './view-categories/view-categories.component';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -24,9 +22,7 @@ import { MyRedDirective } from '../directives/color-red.directive';
 
 
 const routes: Routes =[
-  {path: '', component: SigninComponent, data: { title: 'Sign in'}},
-  {path: 'home', component: HomeComponent},
-  {path: 'signup', component: SignupComponent, data: { title: 'Sign up'}},
+  {path: '', component: HomeComponent, data: { title: 'Home'}},
   {path: 'add-event', component: AddEventComponent},
   {path: 'view-events', component: ViewEventsComponent},
   {path: 'gallery', component: GalleryComponent},
@@ -49,10 +45,9 @@ const routes: Routes =[
   ],
   declarations: [
     HomeComponent,
-    SigninComponent,
-    SignupComponent,
     AddEventComponent,
     ViewEventsComponent,
+    ViewCategoriesComponent,
     GalleryComponent,
     AssociateImageToEventComponent,
     ContactComponent,

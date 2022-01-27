@@ -5,6 +5,7 @@
 //legatura cu baza de date
 export const environment = {
   production: false,
+  api_url: "http://localhost/api",
   firebase : {
     apiKey: "AIzaSyDSmIZVF5ePhLd4ioNbNixIjlWNbxR6ILA",
     authDomain: "blogdb-com.firebaseapp.com",

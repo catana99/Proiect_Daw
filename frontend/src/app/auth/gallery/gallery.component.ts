@@ -63,13 +63,19 @@ export class GalleryComponent implements OnInit {
       //se goleste intai array-ul base64Encodings
       this.base64Encodings = [];
       //Pentru a lua documentele din colectia filtrata dupa evenimentul selectat:
-      this.imagesService.getImagesByEventId(selectedEventId).get().then((querySnapshot) => {
+      this.imagesService.getImagesByEventId(selectedEventId).subscribe( res =>{
+        res.forEach((doc) =>{
+          this.base64Encodings.push(doc.data().base64string);
+        })
+      }
+      )
+      /*this.imagesService.getImagesByEventId(selectedEventId).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             this.base64Encodings.push(doc.data().base64string);
            //proprietatile le gasesc doc.data() --> doc.data().base64string
            //querySnapshot = rezultatul interogarii bazei de date, se iau si parcurg toate imaginile pentru un event id si se pun in vectorul de base64E
         });
-      });
+      });*/
 
     }
   }

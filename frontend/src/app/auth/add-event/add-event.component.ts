@@ -10,6 +10,7 @@ import { EventsService } from 'src/app/core/events.service';
 })
 export class AddEventComponent {
   public eventModel : OngEvent; //aici tin datele evenimentului ce urmeaza sa fie adaugat
+  public categories: Array<any>;
 //declar variabila eventModel de tipul OngEvent
 //serviciile de mai jos sunt cele injectate in constructor
   constructor(private eventsService: EventsService, private messageService: MessageService) {
@@ -17,8 +18,8 @@ export class AddEventComponent {
     this.eventModel.name = '';
     this.eventModel.description = '';
     this.eventModel.date = new Date();
+    this.categories = [{id: 1, value: "Munte"}, {id: 2, value: "Mare"}]
   }
-
 
 
   //se apeleaza cand se apasa pe butonul de Add Event

@@ -1,1 +1,7 @@
-
+select {
+  font-size: 14px;
+  padding: 2px 5px;
+}
+select.chosen-select{
+  width: 100%;
+}

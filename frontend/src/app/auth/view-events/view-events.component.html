@@ -94,9 +94,9 @@
 
     </div>
 </div>
-
 <!-- buton de adaugare eveniment nou-->
 <br> <br>
 <div style="display:flex;justify-content: center;"> <!-- centreaza butonul Add Event -->
   <button type="button" pButton icon="pi pi-plus"  label="Add Event" class="ui-button-secondary" [routerLink]="['/add-event']"></button>
 </div>
+<view-categories [categories]="categories" (isLoaded)="isChildLoaded($event)"></view-categories>

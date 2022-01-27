@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from 'src/app/core/events.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CategoriesService } from 'src/app/core/categories.service';
 
 @Component({
   selector: 'view-events',
@@ -13,12 +14,14 @@ export class ViewEventsComponent implements OnInit {
   public selectedEventCopy: any; //copie a evenimentului selectat necesara pentru ca atunci cand se da edit a doua oara sa se revina la starea initiala a evenimentului,
   //fara modificarile facute initial
   public displayEditDialog: boolean; //in functie de displayEditDialog se afiseaza fereastra de update, la false e ascunsa, la true e vizibila
+  public categories: any[];
 
-  constructor(private eventsService: EventsService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(private eventsService: EventsService, private confirmationService: ConfirmationService, private messageService: MessageService, private categoriesService:CategoriesService) { }
   //serviciile sunt injectate in constructor
 
   ngOnInit() {
-    this.getEvents(); 
+    this.getEvents();
+    this.getCategories();
     this.displayEditDialog = false; //initial, se lasa fereastra de update ascunsa
   }
 
@@ -29,6 +32,12 @@ export class ViewEventsComponent implements OnInit {
         this.events = res;
         console.log('Evenimentele sunt ', this.events);
         //proprietatile se gasesc la event.payload.doc.data()
+      });
+  }
+  private getCategories(){
+    this.categoriesService.getCategories().subscribe(
+      res => {
+        this.categories = res;
       });
   }
 
@@ -58,7 +67,7 @@ export class ViewEventsComponent implements OnInit {
     this.eventsService.updateEvent(this.selectedEvent.payload.doc.id, eventToUpdateData);
     //pentru a face update e nevoie de id-ul evenimentului si de noile date schimbate
 
-    this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully updated!'}); 
+    this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully updated!'});
   }
 
   //stergere eveniment
@@ -71,7 +80,7 @@ export class ViewEventsComponent implements OnInit {
       accept: () => {
         this.eventsService.deleteEvent(event);
 
-        this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully deleted!'});    
+        this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully deleted!'});
       },
       reject: () => {
       }
@@ -82,6 +91,12 @@ export class ViewEventsComponent implements OnInit {
   private onSelect(event: any) {
     console.log('selected event', event);
     this.selectedEvent = event;
+  }
+
+  public isChildLoaded(event){
+    if(event == true){
+      console.log("Child was loaded!\n");
+    }
   }
 
 }
