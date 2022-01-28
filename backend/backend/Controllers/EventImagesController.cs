@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EventImagesController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace backend.Controllers
             return newImage.Id;
         }
 
-        [HttpPatch]
+        [HttpDelete]
         public IActionResult DeleteImage(int imageId)
         {
             EventImagesRepository.Delete(imageId);

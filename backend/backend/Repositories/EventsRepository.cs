@@ -5,31 +5,61 @@ namespace backend.Repositories
 {
     public class EventsRepository : IEventsRepository
     {
-        public DbSet<Event> DbSet { get; }
-        public EventContext EventContext { get; }
+        private DbSet<Event> DbSet { get; }
+        private EventContext EventContext { get; }
+        private IUnitOfWork UnitOfWork { get; }
 
-        public EventsRepository(EventContext dbContext)
+        public EventsRepository(EventContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             EventContext = dbContext;
             DbSet = dbContext.Set<Event>();
+            UnitOfWork = httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
         }
 
         public Event? GetById(int id) => DbSet.Include(x => x.Categories).FirstOrDefault(x => x.Id == id);
         public IEnumerable<Event>? GetAll() => DbSet.Include(x => x.Categories).ToList();
-        public Event Create(Event @event)
+        public Event Create(string name, string description, DateTime date, int[] categories)
         {
-            DbSet.Add(@event);
-            return @event;
+            Event newEvent = new()
+            {
+                Name = name,
+                Description = description,
+                Date = date,
+                Categories = new List<Category>()
+            };
+
+            foreach (var categoryId in categories)
+            {
+                var category = UnitOfWork.CategoriesRepository.GetById(categoryId);
+                if (category != null)
+                {
+                    newEvent.Categories.Add(category);
+                }
+            }
+
+            DbSet.Add(newEvent);
+            return newEvent;
         }
-        public Event? Update(Event @event)
+        public Event? Update(int id, string name, string description, DateTime date, int[] categories)
         {
-            var currentEvent = GetById(@event.Id);
+            var currentEvent = GetById(id);
             if (currentEvent != null)
             {
-                currentEvent.Name = @event.Name;
-                currentEvent.Description = @event.Description;
-                DbSet.Update(currentEvent);
+                currentEvent.Name = name;
+                currentEvent.Description = description;
+                currentEvent.Date = date;
+                currentEvent.Categories?.Clear();
 
+                foreach (var categoryId in categories)
+                {
+                    var category = UnitOfWork.CategoriesRepository.GetById(categoryId);
+                    if (category != null)
+                    {
+                        currentEvent.Categories.Add(category);
+                    }
+                }
+
+                DbSet.Update(currentEvent);
             }
 
             return currentEvent;

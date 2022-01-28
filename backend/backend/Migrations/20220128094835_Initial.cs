@@ -10,7 +10,7 @@ namespace backend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "EventCategories",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventCategories", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,24 +38,24 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryEvent",
+                name: "EventCategory",
                 columns: table => new
                 {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    EventsId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryEvent", x => new { x.CategoriesId, x.EventsId });
+                    table.PrimaryKey("PK_EventCategory", x => new { x.EventId, x.CategoryId });
                     table.ForeignKey(
-                        name: "FK_CategoryEvent_EventCategories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "EventCategories",
+                        name: "FK_EventCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryEvent_Events_EventsId",
-                        column: x => x.EventsId,
+                        name: "FK_EventCategory_Events_EventId",
+                        column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -82,9 +82,9 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryEvent_EventsId",
-                table: "CategoryEvent",
-                column: "EventsId");
+                name: "IX_EventCategory_CategoryId",
+                table: "EventCategory",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventImages_EventId",
@@ -95,13 +95,13 @@ namespace backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryEvent");
+                name: "EventCategory");
 
             migrationBuilder.DropTable(
                 name: "EventImages");
 
             migrationBuilder.DropTable(
-                name: "EventCategories");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Events");

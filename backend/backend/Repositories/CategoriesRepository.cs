@@ -5,8 +5,8 @@ namespace backend.Repositories
 {
     public class CategoriesRepository : ICategoriesRepository
     {
-        public DbSet<Category> DbSet { get; }
-        public EventContext EventContext { get; }
+        private DbSet<Category> DbSet { get; }
+        private EventContext EventContext { get; }
 
         public CategoriesRepository(EventContext dbContext)
         {

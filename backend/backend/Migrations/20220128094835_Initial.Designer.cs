@@ -12,7 +12,7 @@ using backend;
 namespace backend.Migrations
 {
     [DbContext(typeof(EventContext))]
-    [Migration("20220127173620_Initial")]
+    [Migration("20220128094835_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventCategories", (string)null);
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>
@@ -65,6 +65,21 @@ namespace backend.Migrations
                     b.ToTable("Events", (string)null);
                 });
 
+            modelBuilder.Entity("backend.Models.EventCategory", b =>
+                {
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("EventCategory");
+                });
+
             modelBuilder.Entity("backend.Models.EventImage", b =>
                 {
                     b.Property<int>("Id")
@@ -87,19 +102,23 @@ namespace backend.Migrations
                     b.ToTable("EventImages", (string)null);
                 });
 
-            modelBuilder.Entity("CategoryEvent", b =>
+            modelBuilder.Entity("backend.Models.EventCategory", b =>
                 {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
+                    b.HasOne("backend.Models.Category", "Category")
+                        .WithMany("EventCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("EventsId")
-                        .HasColumnType("int");
+                    b.HasOne("backend.Models.Event", "Event")
+                        .WithMany("EventCategories")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("CategoriesId", "EventsId");
+                    b.Navigation("Category");
 
-                    b.HasIndex("EventsId");
-
-                    b.ToTable("CategoryEvent");
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("backend.Models.EventImage", b =>
@@ -113,23 +132,15 @@ namespace backend.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("CategoryEvent", b =>
+            modelBuilder.Entity("backend.Models.Category", b =>
                 {
-                    b.HasOne("backend.Models.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backend.Models.Event", null)
-                        .WithMany()
-                        .HasForeignKey("EventsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("EventCategories");
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>
                 {
+                    b.Navigation("EventCategories");
+
                     b.Navigation("Images");
                 });
 #pragma warning restore 612, 618

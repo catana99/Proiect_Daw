@@ -5,8 +5,8 @@ namespace backend.Repositories
 {
     public class EventImagesRepository : IEventImagesRepository
     {
-        public DbSet<EventImage> DbSet { get; }
-        public EventContext EventContext { get; }
+        private DbSet<EventImage> DbSet { get; }
+        private EventContext EventContext { get; }
 
         public EventImagesRepository(EventContext dbContext)
         {

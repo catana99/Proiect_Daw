@@ -5,9 +5,6 @@ namespace backend.Repositories
 {
     public interface IEventImagesRepository 
     {
-        DbSet<EventImage> DbSet { get; }
-        EventContext EventContext { get; }
-
         EventImage Create(EventImage image);
         void Delete(int eventImageId);
         IEnumerable<EventImage>? GetAll();

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EventsController : ControllerBase
     {
@@ -17,24 +17,24 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public int AddEvent(Event @event)
+        public int AddEvent(string name ,string description, DateTime date, int[] categories)
         {
-            var newEvent = EventsRepository.Create(@event);
+            var newEvent = EventsRepository.Create(name, description, date, categories);
             UnitOfWork.SaveChanges();
             return newEvent.Id;
         }
 
         [HttpPatch]
-        public Event? UpdateEvent(Event @event)
+        public Event? UpdateEvent(int id, string name, string description, DateTime date, int[] categories)
         {
-            var updatedEvent = EventsRepository.Update(@event);
+            var updatedEvent = EventsRepository.Update(id, name, description, date, categories);
             if (updatedEvent != null)
                 UnitOfWork.SaveChanges();
 
             return updatedEvent;
         }
 
-        [HttpPatch]
+        [HttpDelete]
         public IActionResult DeleteEvent(int eventId)
         {
             EventsRepository.Delete(eventId);
