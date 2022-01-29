@@ -17,7 +17,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public int AddEvent(string name ,string description, DateTime date, int[] categories)
+        public int AddEvent(string name ,string description, DateTime date, [FromBody] int[] categories)
         {
             var newEvent = EventsRepository.Create(name, description, date, categories);
             UnitOfWork.SaveChanges();
@@ -25,7 +25,7 @@ namespace backend.Controllers
         }
 
         [HttpPatch]
-        public Event? UpdateEvent(int id, string name, string description, DateTime date, int[] categories)
+        public Event? UpdateEvent(int id, string name, string description, DateTime date, [FromBody]int[] categories)
         {
             var updatedEvent = EventsRepository.Update(id, name, description, date, categories);
             if (updatedEvent != null)

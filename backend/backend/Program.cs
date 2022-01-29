@@ -17,7 +17,7 @@ builder.Services.AddControllers().AddJsonOptions(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddCors();
 builder.Services.AddDbContext<EventContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EventsDatabase")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -43,6 +43,8 @@ using (var scope = app.Services.CreateScope())
 
 
 app.UseAuthorization();
+app.UseCors(
+    options => options.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
 
 app.MapControllers();
 

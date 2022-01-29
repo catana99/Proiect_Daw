@@ -17,7 +17,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public int AddImage(int eventId, string base64string)
+        public int AddImage(int eventId, [FromBody] string base64string)
         {
             var newImage = EventImagesRepository.Create(new EventImage() { EventId = eventId, Base64String = base64string });
             UnitOfWork.SaveChanges();
