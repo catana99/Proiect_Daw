@@ -55,8 +55,8 @@
             <div class="form-group">
             <label for="categories">Categories </label>
             <br/>
-            <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select" name="test">
-              <option *ngFor="let category of categories">{{category.value}}</option>
+            <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select" name="test" [(ngModel)]="eventModel.categories" id="viewCategories" #viewCategories="ngModel">
+              <option *ngFor="let category of categoriesTypes" [ngValue]="category">{{category.name}}</option>
             </select>
           </div>
             <!-- butonul devine activ, doar cand intregul formular cu proprietatile sale devin valide-->

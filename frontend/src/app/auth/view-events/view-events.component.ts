@@ -15,12 +15,14 @@ export class ViewEventsComponent implements OnInit {
   //fara modificarile facute initial
   public displayEditDialog: boolean; //in functie de displayEditDialog se afiseaza fereastra de update, la false e ascunsa, la true e vizibila
   public categories: any[];
+  public categoriesTypes: any[] = [];
 
   constructor(private eventsService: EventsService, private confirmationService: ConfirmationService, private messageService: MessageService, private categoriesService:CategoriesService) { }
   //serviciile sunt injectate in constructor
 
   ngOnInit() {
     this.getEvents();
+    this.getSummary();
     this.getCategories();
     this.displayEditDialog = false; //initial, se lasa fereastra de update ascunsa
   }
@@ -36,6 +38,10 @@ export class ViewEventsComponent implements OnInit {
   }
   private getCategories(){
     this.categoriesService.getCategories().subscribe(
+      res => this.categoriesTypes = res);
+  }
+  private getSummary(){
+    this.eventsService.getSummary().subscribe(
       res => {
         this.categories = res;
       });
@@ -55,19 +61,27 @@ export class ViewEventsComponent implements OnInit {
   }
 
   //updatarea evenimentului
-  private updateEvent() {
+  private updateEvent(selectedEvent) {
     let eventToUpdateData = {
       name: (document.getElementById('viewName') as HTMLInputElement).value,
       description: (document.getElementById('viewDescription') as HTMLTextAreaElement).value,
-      date: (document.getElementById('viewDate') as HTMLInputElement).value
+      date: (document.getElementById('viewDate') as HTMLInputElement).value,
+      categories: selectedEvent.categories,
+      id: (document.getElementById('viewId') as HTMLInputElement).value
     };
     //iau valorile din input-uri si le pun in eventToUpdate
 
     console.warn(eventToUpdateData);
-    this.eventsService.updateEvent(this.selectedEvent.payload.doc.id, eventToUpdateData);
+    this.eventsService.updateEvent(this.selectedEvent.id, eventToUpdateData).subscribe(
+      res => {
+      if(res){
+        this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully updated!'});
+        return res;
+      }}
+    );
     //pentru a face update e nevoie de id-ul evenimentului si de noile date schimbate
 
-    this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully updated!'});
+
   }
 
   //stergere eveniment
@@ -78,8 +92,7 @@ export class ViewEventsComponent implements OnInit {
       message: 'Are you sure that you want to delete this event?',
       key: 'deleteEventDialog',
       accept: () => {
-        this.eventsService.deleteEvent(event);
-
+        this.eventsService.deleteEvent(event).subscribe(res => res);
         this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Event was succesfully deleted!'});
       },
       reject: () => {

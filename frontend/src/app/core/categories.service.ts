@@ -15,7 +15,7 @@ export class CategoriesService {
     }
 
     getCategories() {
-      var path = "Category/GetAll";
+      var path = "/Categories/GetCategories";
       return this.httpClient.get(`${environment.api_url}${path}`)
       .pipe(map((data: Array<any>)=> data))
     }

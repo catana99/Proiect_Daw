@@ -1,71 +1,62 @@
 import { ImagesService } from './images.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, JsonpClientBackend } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable()
 export class EventsService {
-
+    httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
+    options = {headers: this.httpHeaders};
     constructor(private firestore: AngularFirestore, private imagesService: ImagesService, private httpClient: HttpClient) {}
     private formatErrors(error: any) {
       return  throwError(error.error);
     }
     addEvent(event: any) {
-      var path = "Event/Add";
+      var path = "/Events/AddEvent";
+      var completeUrl = `${environment.api_url}${path}?id=${event.id}&name=${encodeURIComponent(event.name)}&description=${encodeURIComponent(event.description)}&date=${encodeURIComponent(event.date)}`;
+      var value = [];
+      for(var category of event.categories){
+        value.push(category.id);
+      }
       return this.httpClient.post(
-        `${environment.api_url}${path}`,
-        JSON.stringify(event)
+        completeUrl, value, this.options
       ).pipe(catchError(this.formatErrors));
-        /*return new Promise<any>((resolve, reject) =>{
-            this.firestore
-                .collection("Events")
-                .add(event)
-                .then(res => {
-                }, err => reject(err));
-        });*/
     }
 
     getEvents() {
-      var path = "Event/GetAll";
+      var path = "/Events/GetEvents";
       return this.httpClient.get(`${environment.api_url}${path}`)
       .pipe(map((data: Array<any>)=> data))
-        //return this.firestore.collection("Events").snapshotChanges();
     }
 
-
-    //la update e nevoie de id-ul evenimentului si de proprietatile ce s-au schimbat la el
     updateEvent(eventId: any, eventToUpdateData: any) {
-      var path = "Event/Update";
+      var path = "/Events/UpdateEvent";
+      var completeUrl = `${environment.api_url}${path}?id=${eventToUpdateData.id}&name=${encodeURIComponent(eventToUpdateData.name)}&description=${encodeURIComponent(eventToUpdateData.description)}&date=${encodeURIComponent(eventToUpdateData.date)}`;
+      var value = [];
+      for(var category of eventToUpdateData.categories){
+        value.push(category.id);
+      }
       return this.httpClient.patch(
-        `${environment.api_url}${path}`,
-        JSON.stringify(eventToUpdateData)
+        completeUrl, value, this.options
       ).pipe(catchError(this.formatErrors));
 
-        /*return this.firestore
-        .collection("Events")
-        .doc(eventId)
-        .set({ name: eventToUpdateData.name, //in set se pun toate proprietatile ce se doresc a fi updatate
-               description: eventToUpdateData.description,
-               date:  eventToUpdateData.date},
-             { merge: true });*/
-
     }
-    //Atunci cand se sterge un eveniment,trebuie sterse si toate imaginile apartinand acelui eveniment
 
     deleteEvent(event: any) {
-      var path = "Event/Delete";
+      var path = "/Events/DeleteEvent";
       return this.httpClient.delete(
-        `${environment.api_url}${path}?id=`+event.id
+        `${environment.api_url}${path}?eventId=`+event.id, this.options
       ).pipe(catchError(this.formatErrors));
 
-        /*this.imagesService.deleteAllImagesOfAnEvent(event.payload.doc.id);
-        return this.firestore
-       .collection("Events")
-       .doc(event.payload.doc.id)
-       .delete();*/
+    }
+
+    getSummary() {
+      var path = "/Events/GetSummary";
+      return this.httpClient.get(`${environment.api_url}${path}`)
+      .pipe(map((data: Array<any>)=> data))
     }
 
 

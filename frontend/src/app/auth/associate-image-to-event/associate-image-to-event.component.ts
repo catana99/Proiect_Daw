@@ -42,8 +42,8 @@ export class AssociateImageToEventComponent implements OnInit, AfterViewInit {
         this.events = [];
         for (let event of events) {
           this.events.push({
-            label: (<any>event.payload.doc.data()).name, //vizibil pentru utilizator in browser
-            value: event.payload.doc.id, //trimis in spate catre server
+            label: event.name, //vizibil pentru utilizator in browser
+            value: event.id, //trimis in spate catre server
             //proprietatea value va fi timisa catre selectedEventId cand e ales un eveniment din dropdown
           })
         }
@@ -80,7 +80,7 @@ export class AssociateImageToEventComponent implements OnInit, AfterViewInit {
         base64string: AssociateImageToEventComponent.base64Encodings[i]
       }
       //imaginea trimisa la serviciu care o trimite sa fie adaugata in Firebase
-      this.imagesService.addImage(newImage);
+      this.imagesService.addImage(newImage).subscribe(res => res);
       console.warn('newImage', newImage);
     }
     this.messageService.add({severity:'success', summary:'SUCCESS', detail:'Images have been added succesfully!'});
